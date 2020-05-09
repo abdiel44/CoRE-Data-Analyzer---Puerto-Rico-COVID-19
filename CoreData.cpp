@@ -3,7 +3,7 @@
 using namespace std;
 
 void displayMenu();
-char choice;
+int choice;
 
 int main()
 {
@@ -11,7 +11,40 @@ int main()
 
     switch(choice)
     {
-        case'1': cout << "Funciona";
+        case 1: cout << "Funciona";
+        break;
+
+        case 2: cout << "Funciona";
+        break;
+
+        case 3: cout << "Funciona";
+        break;
+
+        case 4: cout << "Funciona";
+        break;
+
+        case 5: cout << "Funciona";
+        break;
+
+        case 6: cout << "Funciona";
+        break;
+
+        case 7: cout << "Funciona";
+        break;
+
+        case 8: cout << "Funciona";
+        break;
+
+        case 9: cout << "Funciona";
+        break;
+
+        case 10: cout << "Funciona";
+        break;
+
+        case 11: cout << "Funciona";
+        break;
+
+        case 12: cout << "Funciona";
         break;
     }
 }
