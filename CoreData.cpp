@@ -2,15 +2,21 @@
 #include <iomanip>
 using namespace std;
 
-char displayMenu();
-int choice;
+void displayMenu();
+char choice;
 
 int main()
 {
  displayMenu();
+
+    switch(choice)
+    {
+        case'1': cout << "Funciona";
+        break;
+    }
 }
 
-char displayMenu()
+void displayMenu()
 {
     cout<<"------------------------------------------"<<endl;
     cout<<"|  CoRE COVID-19 Dashboard and Analyzer  |"<<endl;
@@ -42,6 +48,4 @@ char displayMenu()
     cout<<"     Enter option number: ";
     cin>>choice;
     cout<<"------------------------------------------"<<endl;
-
-    return choice;
 }
