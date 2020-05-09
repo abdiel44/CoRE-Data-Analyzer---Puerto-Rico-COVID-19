@@ -26,40 +26,40 @@ int main()
 
     switch(choice)
     {
-        case 1: cout << "Funciona";
+        case 1: displayDataFrame();
         break;
 
-        case 2: cout << "Funciona";
+        case 2: displayTown();
         break;
 
-        case 3: cout << "Funciona";
+        case 3: addTown();
         break;
 
-        case 4: cout << "Funciona";
+        case 4: editTownObservation();
         break;
 
-        case 5: cout << "Funciona";
+        case 5: deleteTown();
         break;
 
-        case 6: cout << "Funciona";
+        case 6:  findTown();
         break;
 
-        case 7: cout << "Funciona";
+        case 7: findObservation();
         break;
 
-        case 8: cout << "Funciona";
+        case 8: saveObservation();
         break;
 
-        case 9: cout << "Funciona";
+        case 9: loadObservation();
         break;
 
-        case 10: cout << "Funciona";
+        case 10: createBarChart();
         break;
 
-        case 11: cout << "Funciona";
+        case 11: showDashboard();
         break;
 
-        case 12: cout << "Funciona";
+        case 12: exit();
         break;
     }
 }
