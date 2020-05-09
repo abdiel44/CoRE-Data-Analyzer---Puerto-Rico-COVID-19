@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <ofstream>
 using namespace std;
 
 //Funtion prototypes
