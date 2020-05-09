@@ -2,7 +2,22 @@
 #include <iomanip>
 using namespace std;
 
+//Funtion prototypes
 void displayMenu();
+void displayDataFrame();
+void displayTown();
+void addTown();
+void editTownObservation();
+void deleteTown();
+void findTown();
+void findObservation();
+void saveObservation();
+void loadObservation();
+void createBarChart();
+void showDashboard();
+void exit();
+
+//Variables
 int choice;
 
 int main()
