@@ -1,9 +1,10 @@
 #include <iostream>
 #include <iomanip>
-#include <ofstream>
+#include <fstream>
 using namespace std;
 
 //Funtion prototypes
+void getData();
 void displayMenu();
 void displayDataFrame();
 void displayTown();
@@ -20,47 +21,59 @@ void exit();
 
 //Variables
 int choice;
+struct data
+  {
+    string id;
+    string name;
+    string region;
+    string molecular;
+    string serological;
+    string population;
+    string lastUpdate;
+  };
 
 int main()
 {
- displayMenu();
+    getData();
+    displayMenu();
+   
 
     switch(choice)
     {
         case 1: displayDataFrame();
         break;
 
-        case 2: displayTown();
+        case 2: //displayTown();
         break;
 
-        case 3: addTown();
+        case 3: //addTown();
         break;
 
-        case 4: editTownObservation();
+        case 4: //editTownObservation();
         break;
 
-        case 5: deleteTown();
+        case 5: //deleteTown();
         break;
 
-        case 6:  findTown();
+        case 6:  //findTown();
         break;
 
-        case 7: findObservation();
+        case 7: //findObservation();
         break;
 
-        case 8: saveObservation();
+        case 8: //saveObservation();
         break;
 
-        case 9: loadObservation();
+        case 9: //loadObservation();
         break;
 
-        case 10: createBarChart();
+        case 10: //createBarChart();
         break;
 
-        case 11: showDashboard();
+        case 11: //showDashboard();
         break;
 
-        case 12: exit();
+        case 12: //exit();
         break;
     }
 }
@@ -97,4 +110,35 @@ void displayMenu()
     cout<<"     Enter option number: ";
     cin>>choice;
     cout<<"------------------------------------------"<<endl;
+}
+
+void getData()
+{
+    ifstream covidData;
+    covidData.open("PuertoRicoCovid19DF.csv");
+    struct data towns[78];
+    string var;
+    bool finish = 0;
+
+      covidData>>var; //Discarding the table header
+
+    while(!finish)
+    {
+      for(int x = 0; x<78; x++)
+      {
+         getline(covidData ,  towns[x].id          , ',');
+         getline(covidData ,  towns[x].name        , ',');
+         getline(covidData ,  towns[x].region      , ',');
+         getline(covidData ,  towns[x].molecular   , ',');
+         getline(covidData ,  towns[x].serological , ',');
+         getline(covidData ,  towns[x].population  , ',');
+         getline(covidData ,  towns[x].lastUpdate);
+      }
+      
+      if(!covidData)
+      {
+        finish = 1;
+        covidData.close();
+      }
+    }
 }
