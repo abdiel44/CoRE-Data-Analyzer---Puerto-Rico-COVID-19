@@ -45,7 +45,7 @@ int main()
         case 1: displayDataFrame();
         break;
 
-        case 2: //displayTown();
+        case 2: displayTown();
         break;
 
         case 3: //addTown();
@@ -78,6 +78,7 @@ int main()
         case 12: //exit();
         break;
     }
+
 }
 
 void displayMenu()
@@ -117,7 +118,6 @@ void displayMenu()
 
 void displayDataFrame()
 {
-  rowsCounter--;
   cout<<"|--------------------------------------------------------";
   cout<<"------------------------------------------------|"<<endl;
   cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
@@ -128,11 +128,10 @@ void displayDataFrame()
   for(int x = 0; x<rowsCounter; x++)
   {
     towns[x].lastUpdate.erase(10, 18);//deliting spaces errors
-
     cout << "|" << setw(7)  << towns[x].id          <<  setw(8) << "|";
-    cout        << setw(11) << towns[x].name        << setw(4)  << "|"; 
+    cout        << setw(11) << towns[x].name        <<  setw(4) << "|"; 
     cout        << setw(11) << towns[x].region      <<  setw(4) << "|";
-    cout        << setw(8)  << towns[x].molecular   << setw(6)  << "|";
+    cout        << setw(8)  << towns[x].molecular   <<  setw(6) << "|";
     cout        << setw(8)  << towns[x].serological <<  setw(8) << "|";
     cout        << setw(10) << towns[x].population  <<  setw(5) << "|";
     cout        << setw(12)  << towns[x].lastUpdate <<  setw(3) << "|" << endl;
@@ -141,6 +140,46 @@ void displayDataFrame()
     cout<<"------------------------------------------------|"<<endl;
   }
 }
+
+void displayTown()
+{
+  string observationId;
+  bool incorrectId = 1;
+
+  cout<<"|-------------------------------------------------|"<<endl;
+  cout<<"           Enter the observation ID: ";
+  cin>>observationId;
+  cout<<"|-------------------------------------------------|"<<endl;
+
+  for(int i = 0; i<rowsCounter; i++)
+  {
+    if(towns[i].id == observationId)
+    {
+      cout << "  ID           :    " << towns[i].id          << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  TOWN         :    " << towns[i].name        << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  REGION       :    " << towns[i].region      << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  MOLECULAR    :    " << towns[i].molecular   << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  SEROLOGIC    :    " << towns[i].serological << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  POPULATION   :    " << towns[i].population  << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  LAST UPDATE  :    " << towns[i].lastUpdate  << endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      incorrectId = 0;
+    }
+  }
+  
+  if(incorrectId)
+    {
+      cout << "    Did not find any observation with that id!" << endl;
+      cout << "|-------------------------------------------------|" << endl;
+    }
+}
+
 
 void getData()
 {
@@ -166,4 +205,5 @@ void getData()
       {
         covidData.close();
       }
+    rowsCounter--;
 }
