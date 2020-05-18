@@ -20,6 +20,7 @@ void showDashboard();
 void exit();
 
 //Variables
+int rowsCounter = 0;
 int choice;
 struct data
   {
@@ -31,13 +32,14 @@ struct data
     string population;
     string lastUpdate;
   };
+  struct data towns[78];
 
 int main()
 {
     getData();
+    towns[0].id.replace(0, 1, "");//to delete  \n
     displayMenu();
    
-
     switch(choice)
     {
         case 1: displayDataFrame();
@@ -80,6 +82,7 @@ int main()
 
 void displayMenu()
 {
+  //Main menu
     cout<<"------------------------------------------"<<endl;
     cout<<"|  CoRE COVID-19 Dashboard and Analyzer  |"<<endl;
     cout<<"------------------------------------------"<<endl;
@@ -109,36 +112,58 @@ void displayMenu()
     cout<<"------------------------------------------"<<endl;
     cout<<"     Enter option number: ";
     cin>>choice;
-    cout<<"------------------------------------------"<<endl;
+    cout<<"------------------------------------------"<<endl<<endl;
+}
+
+void displayDataFrame()
+{
+  rowsCounter--;
+  cout<<"|--------------------------------------------------------";
+  cout<<"------------------------------------------------|"<<endl;
+  cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
+  cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
+  cout<<"|------------------------------------------------";
+  cout<<"--------------------------------------------------------|"<<endl;
+  
+  for(int x = 0; x<rowsCounter; x++)
+  {
+    towns[x].lastUpdate.erase(10, 18);//deliting spaces errors
+
+    cout << "|" << setw(7)  << towns[x].id          <<  setw(8) << "|";
+    cout        << setw(11) << towns[x].name        << setw(4)  << "|"; 
+    cout        << setw(11) << towns[x].region      <<  setw(4) << "|";
+    cout        << setw(8)  << towns[x].molecular   << setw(6)  << "|";
+    cout        << setw(8)  << towns[x].serological <<  setw(8) << "|";
+    cout        << setw(10) << towns[x].population  <<  setw(5) << "|";
+    cout        << setw(12)  << towns[x].lastUpdate <<  setw(3) << "|" << endl;
+    
+    cout<<"|--------------------------------------------------------";
+    cout<<"------------------------------------------------|"<<endl;
+  }
 }
 
 void getData()
 {
     ifstream covidData;
     covidData.open("PuertoRicoCovid19DF.csv");
-    struct data towns[78];
     string var;
     bool finish = 0;
-
-      covidData>>var; //Discarding the table header
-
-    while(!finish)
-    {
-      for(int x = 0; x<78; x++)
-      {
-         getline(covidData ,  towns[x].id          , ',');
-         getline(covidData ,  towns[x].name        , ',');
-         getline(covidData ,  towns[x].region      , ',');
-         getline(covidData ,  towns[x].molecular   , ',');
-         getline(covidData ,  towns[x].serological , ',');
-         getline(covidData ,  towns[x].population  , ',');
-         getline(covidData ,  towns[x].lastUpdate);
-      }
+    covidData>>var; //Discarding the table header
+      
+     while(covidData)
+        {
+         getline(covidData ,  towns[rowsCounter].id          , ',');
+         getline(covidData ,  towns[rowsCounter].name        , ',');
+         getline(covidData ,  towns[rowsCounter].region      , ',');
+         getline(covidData ,  towns[rowsCounter].molecular   , ',');
+         getline(covidData ,  towns[rowsCounter].serological , ',');
+         getline(covidData ,  towns[rowsCounter].population  , ',');
+         getline(covidData ,  towns[rowsCounter].lastUpdate       ); 
+         rowsCounter++;
+        }
       
       if(!covidData)
       {
-        finish = 1;
         covidData.close();
       }
-    }
 }
