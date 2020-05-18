@@ -48,10 +48,10 @@ int main()
         case 2: displayTown();
         break;
 
-        case 3: //addTown();
+        case 3: addTown();
         break;
 
-        case 4: //editTownObservation();
+        case 4: editTownObservation();
         break;
 
         case 5: //deleteTown();
@@ -172,7 +172,6 @@ void displayTown()
       incorrectId = 0;
     }
   }
-  
   if(incorrectId)
     {
       cout << "    Did not find any observation with that id!" << endl;
@@ -180,6 +179,133 @@ void displayTown()
     }
 }
 
+void addTown()
+{
+  string id;
+  struct newData 
+  {
+    string newId;
+    string newName;
+    string newRegion;
+    string newMolecular;
+    string newSerological;
+    string newPopulation;
+    string newLastUpdate;
+  } newTown;
+
+   cout<<"               ADDING AN OBSERVATION"<<endl;
+   cout << "|-------------------------------------------------|"<<endl;
+
+   if(rowsCounter >= 78)
+    {
+      cout<<"              Your Data frame is full!"<<endl;
+      cout << "|-------------------------------------------------|"<<endl;
+    }
+    else
+    {
+      cout << "  Enter observation id     :  " ;
+      cin>>newTown.newId;
+      id = newTown.newId;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter town               :  " ;
+      cin.ignore();
+      getline(cin, newTown.newName);
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter region             :  " ;
+      cin>>newTown.newRegion;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter molecular cases    :  " ;
+      cin>>newTown.newMolecular;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter serological cases  :  " ;
+      cin>>newTown.newSerological;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter population         :  " ;
+      cin>>newTown.newPopulation;
+      cout << "|-------------------------------------------------|"<<endl;
+      cout << "  Enter last update        :  " ;
+      cin>>newTown.newLastUpdate;
+      cout << "|-------------------------------------------------|"<<endl;   
+      
+      for(int i =0; i<rowsCounter;  i++)
+      {
+        if(newTown.newName == towns[i].name)
+        {
+          cout<<"        The town " << newTown.newName << " already exists!"<<endl;
+          cout << "|-------------------------------------------------|"<<endl; 
+        }
+        if(id == towns[i].id)
+        {
+          cout<<"           The id " << newTown.newId << " already exists!"<<endl;
+          cout << "|-------------------------------------------------|"<<endl; 
+        }
+      }
+    } 
+}
+
+void  editTownObservation()
+{
+  int townId;
+  string observationId;
+  bool incorrectId = 1;
+
+  cout<<"          EDITING A TOWN INFORMATION"<<endl;
+  cout<<"|-------------------------------------------------|"<<endl;
+  cout<<"           Enter the observation ID: ";
+  cin>>observationId;
+
+  for(int i = 0; i<rowsCounter; i++)
+  {
+    if(towns[i].id == observationId)
+    {
+       cout<<"|-------------------------------------------------|"<<endl;
+       cout<<"             CURRENT Information:"<<endl;
+       cout<<"|-------------------------------------------------|"<<endl;
+       cout << "  ID           :    " << towns[i].id          << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  TOWN         :    " << towns[i].name        << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  REGION       :    " << towns[i].region      << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  MOLECULAR    :    " << towns[i].molecular   << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  SEROLOGIC    :    " << towns[i].serological << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  POPULATION   :    " << towns[i].population  << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+       cout << "  LAST UPDATE  :    " << towns[i].lastUpdate  << endl;
+       cout << "|-------------------------------------------------|"<<endl;
+      incorrectId = 0;
+      townId =  i;
+    }
+  }
+  if(incorrectId)
+    {
+      cout << "|-------------------------------------------------|" << endl;
+      cout << "    Did not find any observation with that id!" << endl;
+      cout << "|-------------------------------------------------|" << endl;
+    }
+  else
+  {
+    cout << endl << "|-------------------------------------------------|" << endl;
+    cout << "| Please enter the new information for the town:  |" <<endl;
+    cout << "|-------------------------------------------------|" << endl << endl;
+    cout << " MOLECULAR    :  ";
+    cin>>towns[townId].molecular;
+    cout << "---------------------------------------------------" << endl;
+    cout << " SEROLOGIC    :  ";
+    cin>>towns[townId].serological;
+    cout << "---------------------------------------------------" << endl;
+    cout << " POPULATION   :  ";
+    cin>>towns[townId].population;
+    cout << "---------------------------------------------------" << endl;
+    cout << " LAST UPDATE  :  ";
+    cin>>towns[townId].lastUpdate;
+    cout << "|-------------------------------------------------|" << endl;
+    cout << setw(18) << towns[townId].name << " was updated successfully!" << endl;
+    cout << "|-------------------------------------------------|" << endl;
+  }
+}
 
 void getData()
 {
