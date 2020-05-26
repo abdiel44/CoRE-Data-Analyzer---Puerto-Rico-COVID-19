@@ -12,7 +12,7 @@ void displayTown();
 void addTown();
 void editTownObservation();
 void deleteTown();
-void findTown();
+void findTownByRegion();
 void findObservation();
 void saveObservation();
 void loadObservation();
@@ -64,7 +64,7 @@ int main()
         case 5: deleteTown();
         break;
 
-        case 6: //findTown();
+        case 6: findTownByRegion();
         break;
 
         case 7: //findObservation();
@@ -389,6 +389,56 @@ void deleteTown()
       maxTowns++;
     }
   }
+}
+
+void findTownByRegion()
+{
+  bool exist = false; //to 
+  string region;
+
+   cout<<"FINDING OBSERVATIONS BY REGION"<<endl;
+   cout<<"|-----------------------------------|"<<endl;
+   cout<<"  Enter REGION name:";
+   cin>>region;
+
+   for(int i = 0; i<rowsCounter; i++)
+   {
+     if(region == towns[i].region && !towns[i].deleted)
+     {
+          exist = true;
+     }
+   }
+  
+  if(exist)
+  {
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
+   cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
+   cout<<"|------------------------------------------------";
+   cout<<"--------------------------------------------------------|"<<endl;
+    
+    for(int i =0; i<rowsCounter; i++)
+    {
+      if(!towns[i].deleted && region == towns[i].region)
+     {
+         cout << "|" << setw(7)  << towns[i].id          <<  setw(8) << "|";
+         cout        << setw(11) << towns[i].name        <<  setw(4) << "|"; 
+         cout        << setw(11) << towns[i].region      <<  setw(4) << "|";
+         cout        << setw(8)  << towns[i].molecular   <<  setw(6) << "|";
+         cout        << setw(8)  << towns[i].serological <<  setw(8) << "|";
+         cout        << setw(10) << towns[i].population  <<  setw(5) << "|";
+         cout        << setw(12) << towns[i].lastUpdate  <<  setw(3) << "|" << endl;
+         cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+     }
+    }
+  }
+  else
+  {
+    cout<<"Error"<<endl;
+  }
+
 }
 
 void getData()
