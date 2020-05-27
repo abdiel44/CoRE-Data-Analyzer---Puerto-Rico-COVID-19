@@ -15,7 +15,6 @@ void deleteTown();
 void findTownByRegion();
 void findObservationByTown();
 void saveObservation();
-void loadObservation();
 void createBarChart();
 void showDashboard();
 void exit();
@@ -41,8 +40,6 @@ struct data          //Stores the information of the file
 
 int main()
 {
-    getData();
-   
    do
    {
     displayMenu();
@@ -70,10 +67,10 @@ int main()
         case 7: findObservationByTown();
         break;
 
-        case 8: //saveObservation();
+        case 8: saveObservation();
         break;
 
-        case 9: //loadObservation();
+        case 9: getData();
         break;
 
         case 10: //createBarChart();
@@ -255,26 +252,12 @@ void addTown()
           cout << "|-------------------------------------------------|"<<endl; 
           exist = 1;
         }
-        //else if(Name == towns[i].name)
-        //{
-        ///  cout<<"        The town " << Name << " already exists!"<<endl;
-         // cout << "|-------------------------------------------------|"<<endl; 
-         // exist = 1;
-        //}
-
         if(id == towns[i].id  && towns[i].deleted == false) //verifying that the id does not exist
         {
           cout<<"           The id " << Id << " already exists!"<<endl;
           cout << "|-------------------------------------------------|"<<endl; 
           exist = 1;
         }
-        //else if(id == towns[i].id )
-       // {
-        //  cout<<"           The id " << Id << " already exists!"<<endl;
-        //  cout << "|-------------------------------------------------|"<<endl; 
-        //  exist = 1;
-        //}
-        
       }
     } 
     if(!exist)
@@ -502,6 +485,37 @@ void findObservationByTown()
     cout<<"|--------------------------------------------------------";
          cout<<"------------------------------------------------|"<<endl;
   }
+}
+
+void saveObservation()
+{
+  ofstream covidData;
+  covidData.open("PuertoRicoCovid19DF.csv");
+
+  for(int i=0; i<rowsCounter; i++)
+  {
+    if(towns[i].deleted)
+    {
+      towns[i].id = "";
+      towns[i].name = "";
+      towns[i].region = "";
+      towns[i].molecular = "";
+      towns[i].serological = "";
+      towns[i].population = "";
+      towns[i].lastUpdate = "";
+    }
+    else
+    {
+      covidData<<towns[i].id<<",";
+      covidData<<towns[i].name<<",";
+      covidData<<towns[i].region<<",";
+      covidData<<towns[i].molecular<<",";
+      covidData<<towns[i].serological<<",";
+      covidData<<towns[i].population<<",";
+      covidData<<towns[i].lastUpdate<<endl;
+    }
+  }
+  covidData.close();
 }
 
 void getData()
