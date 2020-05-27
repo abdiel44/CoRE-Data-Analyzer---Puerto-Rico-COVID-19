@@ -13,7 +13,7 @@ void addTown();
 void editTownObservation();
 void deleteTown();
 void findTownByRegion();
-void findObservation();
+void findObservationByTown();
 void saveObservation();
 void loadObservation();
 void createBarChart();
@@ -67,7 +67,7 @@ int main()
         case 6: findTownByRegion();
         break;
 
-        case 7: //findObservation();
+        case 7: findObservationByTown();
         break;
 
         case 8: //saveObservation();
@@ -393,12 +393,15 @@ void deleteTown()
 
 void findTownByRegion()
 {
-  bool exist = false; //to 
+  bool exist = false; 
   string region;
 
-   cout<<"FINDING OBSERVATIONS BY REGION"<<endl;
-   cout<<"|-----------------------------------|"<<endl;
-   cout<<"  Enter REGION name:";
+  cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<"|"<<setw(65)<<"FINDING OBSERVATIONS BY REGION"<<setw(40)<<"|"<<endl;
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<setw(56)<<"Enter REGION name: ";
    cin>>region;
 
    for(int i = 0; i<rowsCounter; i++)
@@ -436,9 +439,69 @@ void findTownByRegion()
   }
   else
   {
-    cout<<"Error"<<endl;
+    cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+    cout<<"|"<<setw(75)<<"Did not find any Observation with that region!"<<setw(30)<<"|"<<endl;
+    cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
   }
+}
 
+void findObservationByTown()
+{
+   bool exist = false;  
+  string name;
+
+  cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<"|"<<setw(65)<<"FINDING OBSERVATIONS BY TOWN NAME"<<setw(40)<<"|"<<endl;
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<setw(56)<<"Enter REGION name: ";
+   cin.ignore();
+   getline(cin, name);
+
+   for(int i = 0; i<rowsCounter; i++)
+   {
+     if(name == towns[i].name && !towns[i].deleted)
+     {
+          exist = true;
+     }
+   }
+  
+  if(exist)
+  {
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
+   cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
+   cout<<"|------------------------------------------------";
+   cout<<"--------------------------------------------------------|"<<endl;
+    
+    for(int i =0; i<rowsCounter; i++)
+    {
+      if(!towns[i].deleted && name == towns[i].name)
+     {
+         cout << "|" << setw(7)  << towns[i].id          <<  setw(8) << "|";
+         cout        << setw(11) << towns[i].name        <<  setw(4) << "|"; 
+         cout        << setw(11) << towns[i].region      <<  setw(4) << "|";
+         cout        << setw(8)  << towns[i].molecular   <<  setw(6) << "|";
+         cout        << setw(8)  << towns[i].serological <<  setw(8) << "|";
+         cout        << setw(10) << towns[i].population  <<  setw(5) << "|";
+         cout        << setw(12) << towns[i].lastUpdate  <<  setw(3) << "|" << endl;
+         cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+     }
+    }
+  }
+  else
+  {
+    cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+    cout<<"|"<<setw(75)<<"Did not find any Observation with that name!"<<setw(30)<<"|"<<endl;
+    cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+  }
 }
 
 void getData()
