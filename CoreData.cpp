@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <stdio.h>
+#include <cstring>
 using namespace std;
 
 //Funtion prototypes
@@ -646,10 +647,11 @@ void getData()
 
 void createBarChart()
 {
-  int total[78]; // to save the total casesfor each town
+  int total[maxTowns]; // to save the total cases for each town
   int longBar;   // to stipulate the length of the bar
+  int globalTotal; //to get the total cases in Puerto Rico 
   char bar = '*';// bar simbol
-
+  int townsLength; //to know the length of a string
   cout<<"|-------------------------------------------------------------------------------|"<<endl;
   cout<<"|                              BAR CHART OPTION                                 |"<<endl;
   cout<<"|-------------------------------------------------------------------------------|"<<endl;
@@ -658,25 +660,27 @@ void createBarChart()
   {
     cout<<"|                            TOTAL CASES FOR TOWN                               |"<<endl;
     cout<<"|-------------------------------------------------------------------------------|"<<endl;
-    cout<<"|                                                                               |"<<endl;
-    cout<<"|   Town   |                                                           |Total   |"<<endl;
+    cout<<"                                                                                 "<<endl;
+    cout<<"   Town         |                                                     |Total     "<<endl;
     for(int i =0; i<rowsCounter; i++)
     {
+      townsLength = towns[i].name.length(); //to know the length of a town name
       Converse(); // to convert the string to integers
       
       total[i]= towns[i].Molecular + towns[i].Serological;
-      
+      globalTotal = globalTotal + total[i];
       longBar = total[i]/10;
       
-      cout<<"|"<<"  "<<towns[i].name<<"|   ";
+      cout<<"  "<<towns[i].name<<setw(15 - townsLength)<<"|"<<setw(2);
       for(int x =0; x<=longBar; x++)
       {
         cout<<bar;
       }
-      cout<<"    |"<<total[i]<<endl;
+      cout<<setw(52 - longBar)<<"|"<<total[i]<<endl;
     }
-     cout<<"|                                                                               |"<<endl;
+     cout<<"                                                                                 "<<endl;
      cout<<"|-------------------------------------------------------------------------------|"<<endl;
+     cout<<"   Total        |                                                     |"<<globalTotal<<endl;
   }
   else //if not exist data
   {
@@ -706,7 +710,7 @@ void showDashboard()
 
     totalSerological = totalSerological + towns[i].Serological;
   }
-
+  
   cout<<"|-------------------------------------------------------|"<<endl;
   cout<<"|          PUERTO RICO COVID DASHBOARD                  |"<<endl;
   cout<<"|-------------------------------------------------------|"<<endl;
