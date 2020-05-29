@@ -26,26 +26,29 @@ bool done =0;        //Control the loop
 string var;          //To save the table header
 int rowsCounter = 0; //Keeps track of stored rows
 int choice;          //Strore user selection from main menu
-int maxTowns = 78;
+int maxTowns = 78;    //to set the size of the array 
 struct data          //Stores the information of the file
   {
-    string id;
-    string name;
-    string region;
-    int Molecular;
-    string molecular;
-    int Serological;
-    string serological;
-    string population;
-    string lastUpdate;
+    string id = "";
+    string name = "";
+    string region = "";
+    int Molecular = 0;
+    string molecular = "";
+    int Serological = 0;
+    string serological = "";
+    string population = "";
+    string lastUpdate = "";
     bool deleted = false;
-  } towns[78]; 
+  } ; 
+
+ struct data *towns = new struct data[maxTowns]; //to manipulate the size of the array
 
 int main()
 {
    do
    {
     displayMenu();
+    
     
     switch(choice)
       {
@@ -129,6 +132,14 @@ int main()
 
         case 12: exit();
         break;
+
+        default: cout<<"|----------------------------------------------|"<<endl;
+                 cout<<"|      Invalid input, please try again.        |"<<endl;
+                 cout<<"|----------------------------------------------|"<<endl;
+                 cout<<"<Press ENTER to continue>"<<endl;
+                 cin.get();
+                 cin.ignore();
+                 system("clear");
       }
    }while(!done);
 }
@@ -247,7 +258,7 @@ void displayTown()
 void addTown()
 {
   bool exist = 0;
-    string id;
+  string id;
 
     string Id;
     string Name;
@@ -271,33 +282,33 @@ void addTown()
       cout << "  Enter observation id     :  " ;
       cin>>Id;
       id = Id;
-      cout << "|-------------------------------------------------|"<<endl;
+      cout << "|-------------------------------------------------|" << endl;
       cout << "  Enter town               :  " ;
       cin.ignore();
       getline(cin, Name);
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter region             :  " ;
-      cin>>Region;
+      cin >> Region;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter molecular cases    :  " ;
-      cin>>Molecular;
+      cin >> Molecular;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter serological cases  :  " ;
-      cin>>Serological;
+      cin >> Serological;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter population         :  " ;
-      cin>>Population;
+      cin >> Population;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter last update        :  " ;
-      cin>>LastUpdate;
-      cout << "|-------------------------------------------------|"<<endl;   
+      cin >> LastUpdate;
+      cout << "|-------------------------------------------------|" << endl;   
       
       for(int i =0; i<rowsCounter;  i++)
       {
         if(Name == towns[i].name && towns[i].deleted == false) //verifying that the name does not exist
         {
-          cout<<"        The town " << Name << " already exists!"<<endl;
-          cout << "|-------------------------------------------------|"<<endl; 
+          cout << "        The town " << Name << " already exists!" << endl;
+          cout << "|-------------------------------------------------|" << endl; 
           exist = 1;
         }
         if(id == towns[i].id  && towns[i].deleted == false) //verifying that the id does not exist
@@ -620,7 +631,7 @@ void getData()
         towns[5].name.replace(0, 1, "");//to delete a space, please ignore.
         for(int x=0 ; x<=5; x++)//deliting spaces errors, please ignore.
           {
-            towns[x].lastUpdate.erase(10, 18); 
+              towns[x].lastUpdate.erase(10, 18); 
           }
       }
       else  //if there's nothing left to read
@@ -657,7 +668,7 @@ void createBarChart()
       
       longBar = total[i]/10;
       
-      cout<<"|"<<"  "<<towns[i].name<<"|"<<"   ";
+      cout<<"|"<<"  "<<towns[i].name<<"|   ";
       for(int x =0; x<=longBar; x++)
       {
         cout<<bar;
@@ -716,6 +727,7 @@ void Converse() // to convert the string to integers
     towns[i].Serological = stoi(towns[i].serological);
   }
 }
+
 void exit()
 {
   done = 1;
