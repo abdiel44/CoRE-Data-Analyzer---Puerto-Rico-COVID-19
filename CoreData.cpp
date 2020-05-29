@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <cstdlib>
+#include <stdio.h>
 using namespace std;
 
 //Funtion prototypes
@@ -11,79 +13,141 @@ void displayTown();
 void addTown();
 void editTownObservation();
 void deleteTown();
-void findTown();
-void findObservation();
+void findTownByRegion();
+void findObservationByTown();
 void saveObservation();
-void loadObservation();
 void createBarChart();
 void showDashboard();
 void exit();
+void Converse();
 
 //Variables
-int rowsCounter = 0;
-int choice;
-struct data
+bool done =0;        //Control the loop
+string var;          //To save the table header
+int rowsCounter = 0; //Keeps track of stored rows
+int choice;          //Strore user selection from main menu
+int maxTowns = 78;    //to set the size of the array 
+struct data          //Stores the information of the file
   {
-    string id;
-    string name;
-    string region;
-    string molecular;
-    string serological;
-    string population;
-    string lastUpdate;
-  };
-  struct data towns[78];
+    string id = "";
+    string name = "";
+    string region = "";
+    int Molecular = 0;
+    string molecular = "";
+    int Serological = 0;
+    string serological = "";
+    string population = "";
+    string lastUpdate = "";
+    bool deleted = false;
+  } ; 
+
+ struct data *towns = new struct data[maxTowns]; //to manipulate the size of the array
 
 int main()
 {
-    getData();
-    towns[0].id.replace(0, 1, "");//to delete  \n
+   do
+   {
     displayMenu();
-   
+    
+    
     switch(choice)
-    {
-        case 1: displayDataFrame();
+      {
+        case 1:
+                displayDataFrame();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
         case 2: displayTown();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
         case 3: addTown();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
         case 4: editTownObservation();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 5: //deleteTown();
+        case 5: deleteTown();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 6:  //findTown();
+        case 6: findTownByRegion();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 7: //findObservation();
+        case 7: findObservationByTown();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 8: //saveObservation();
+        case 8: saveObservation();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 9: //loadObservation();
+        case 9: getData();
+                cout<<"<Press ENTER to continue>"<<endl;
+                cin.get();
+                cin.ignore();
+                system("clear");
         break;
 
-        case 10: //createBarChart();
+        case 10: createBarChart();
+                 cout<<"<Press ENTER to continue>"<<endl;
+                 cin.get();
+                 cin.ignore();
+                 system("clear");
         break;
 
-        case 11: //showDashboard();
+        case 11: showDashboard();
+                 cout<<"<Press ENTER to continue>"<<endl;
+                 cin.get();
+                 cin.ignore();
+                 system("clear");
         break;
 
-        case 12: //exit();
+        case 12: exit();
         break;
-    }
 
+        default: cout<<"|----------------------------------------------|"<<endl;
+                 cout<<"|      Invalid input, please try again.        |"<<endl;
+                 cout<<"|----------------------------------------------|"<<endl;
+                 cout<<"<Press ENTER to continue>"<<endl;
+                 cin.get();
+                 cin.ignore();
+                 system("clear");
+      }
+   }while(!done);
 }
 
 void displayMenu()
 {
   //Main menu
+    cout<< endl;
     cout<<"------------------------------------------"<<endl;
     cout<<"|  CoRE COVID-19 Dashboard and Analyzer  |"<<endl;
     cout<<"------------------------------------------"<<endl;
@@ -124,28 +188,31 @@ void displayDataFrame()
   cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
   cout<<"|------------------------------------------------";
   cout<<"--------------------------------------------------------|"<<endl;
-  
-  for(int x = 0; x<rowsCounter; x++)
+      
+  for(int i = 0; i<rowsCounter; i++)
   {
-    towns[x].lastUpdate.erase(10, 18);//deliting spaces errors
-    cout << "|" << setw(7)  << towns[x].id          <<  setw(8) << "|";
-    cout        << setw(11) << towns[x].name        <<  setw(4) << "|"; 
-    cout        << setw(11) << towns[x].region      <<  setw(4) << "|";
-    cout        << setw(8)  << towns[x].molecular   <<  setw(6) << "|";
-    cout        << setw(8)  << towns[x].serological <<  setw(8) << "|";
-    cout        << setw(10) << towns[x].population  <<  setw(5) << "|";
-    cout        << setw(12)  << towns[x].lastUpdate <<  setw(3) << "|" << endl;
+    if(!towns[i].deleted)//verifying that the town is not erased
+    {
+
+         cout << "|" << setw(7)  << towns[i].id          <<  setw(8) << "|";
+         cout        << setw(11) << towns[i].name        <<  setw(4) << "|"; 
+         cout        << setw(11) << towns[i].region      <<  setw(4) << "|";
+         cout        << setw(8)  << towns[i].molecular   <<  setw(6) << "|";
+         cout        << setw(8)  << towns[i].serological <<  setw(8) << "|";
+         cout        << setw(10) << towns[i].population  <<  setw(5) << "|";
+         cout        << setw(12) << towns[i].lastUpdate  <<  setw(3) << "|" << endl;
     
-    cout<<"|--------------------------------------------------------";
-    cout<<"------------------------------------------------|"<<endl;
+         cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+    }
+  
   }
 }
 
 void displayTown()
 {
-  string observationId;
-  bool incorrectId = 1;
-
+  string observationId; //User input
+  bool exist = false; 
   cout<<"|-------------------------------------------------|"<<endl;
   cout<<"           Enter the observation ID: ";
   cin>>observationId;
@@ -153,7 +220,15 @@ void displayTown()
 
   for(int i = 0; i<rowsCounter; i++)
   {
-    if(towns[i].id == observationId)
+    if(observationId == towns[i].id && towns[i].deleted == true) //if exist but is deleted
+    {
+      cout << "    Did not find any observation with that id!" << endl;
+      cout << "|-------------------------------------------------|" << endl;
+      exist = true;
+      break;
+    }
+
+    if(observationId == towns[i].id) //if exist
     {
       cout << "  ID           :    " << towns[i].id          << endl;
       cout << "|-------------------------------------------------|"<<endl;
@@ -169,10 +244,11 @@ void displayTown()
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  LAST UPDATE  :    " << towns[i].lastUpdate  << endl;
       cout << "|-------------------------------------------------|"<<endl;
-      incorrectId = 0;
+      exist = true;
     }
+    
   }
-  if(incorrectId)
+   if(exist == false) //if not exist
     {
       cout << "    Did not find any observation with that id!" << endl;
       cout << "|-------------------------------------------------|" << endl;
@@ -181,73 +257,93 @@ void displayTown()
 
 void addTown()
 {
+  bool exist = 0;
   string id;
-  struct newData 
-  {
-    string newId;
-    string newName;
-    string newRegion;
-    string newMolecular;
-    string newSerological;
-    string newPopulation;
-    string newLastUpdate;
-  } newTown;
 
+    string Id;
+    string Name;
+    string Region;
+    string Molecular;
+    string Serological;
+    string Population;
+    string LastUpdate;
+   
    cout<<"               ADDING AN OBSERVATION"<<endl;
    cout << "|-------------------------------------------------|"<<endl;
 
-   if(rowsCounter >= 78)
+   if(rowsCounter >= maxTowns) //if it's full.
     {
       cout<<"              Your Data frame is full!"<<endl;
       cout << "|-------------------------------------------------|"<<endl;
+      exist = 1;
     }
-    else
+    else //if it's not full
     {
       cout << "  Enter observation id     :  " ;
-      cin>>newTown.newId;
-      id = newTown.newId;
-      cout << "|-------------------------------------------------|"<<endl;
+      cin>>Id;
+      id = Id;
+      cout << "|-------------------------------------------------|" << endl;
       cout << "  Enter town               :  " ;
       cin.ignore();
-      getline(cin, newTown.newName);
+      getline(cin, Name);
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter region             :  " ;
-      cin>>newTown.newRegion;
+      cin >> Region;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter molecular cases    :  " ;
-      cin>>newTown.newMolecular;
+      cin >> Molecular;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter serological cases  :  " ;
-      cin>>newTown.newSerological;
+      cin >> Serological;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter population         :  " ;
-      cin>>newTown.newPopulation;
+      cin >> Population;
       cout << "|-------------------------------------------------|"<<endl;
       cout << "  Enter last update        :  " ;
-      cin>>newTown.newLastUpdate;
-      cout << "|-------------------------------------------------|"<<endl;   
+      cin >> LastUpdate;
+      cout << "|-------------------------------------------------|" << endl;   
       
       for(int i =0; i<rowsCounter;  i++)
       {
-        if(newTown.newName == towns[i].name)
+        if(Name == towns[i].name && towns[i].deleted == false) //verifying that the name does not exist
         {
-          cout<<"        The town " << newTown.newName << " already exists!"<<endl;
-          cout << "|-------------------------------------------------|"<<endl; 
+          cout << "        The town " << Name << " already exists!" << endl;
+          cout << "|-------------------------------------------------|" << endl; 
+          exist = 1;
         }
-        if(id == towns[i].id)
+        if(id == towns[i].id  && towns[i].deleted == false) //verifying that the id does not exist
         {
-          cout<<"           The id " << newTown.newId << " already exists!"<<endl;
+          cout<<"           The id " << Id << " already exists!"<<endl;
           cout << "|-------------------------------------------------|"<<endl; 
+          exist = 1;
         }
       }
     } 
+    if(!exist)//storing the town in the structure
+    {
+      towns[rowsCounter].id          = id;
+      towns[rowsCounter].name        = Name;    
+      towns[rowsCounter].region      = Region;
+      towns[rowsCounter].molecular   = Molecular;
+      towns[rowsCounter].serological = Serological;
+      towns[rowsCounter].population  = Population;
+      towns[rowsCounter].lastUpdate  = LastUpdate;
+      towns[rowsCounter].deleted     = false;
+      cout << "    " << towns[rowsCounter].name << " was added succesfully!"<<endl;
+      cout << "|-------------------------------------------------|"<<endl;
+      rowsCounter++;
+    }
 }
 
 void  editTownObservation()
 {
-  int townId;
-  string observationId;
-  bool incorrectId = 1;
+  int index;            // array position
+  string observationId; //User input
+  bool incorrectId = 1; //flag
+  string Molecular;     //new data
+  string Serological;   //new data
+  string Population;    //new data
+  string LastUpdate;    //new data
 
   cout<<"          EDITING A TOWN INFORMATION"<<endl;
   cout<<"|-------------------------------------------------|"<<endl;
@@ -256,7 +352,7 @@ void  editTownObservation()
 
   for(int i = 0; i<rowsCounter; i++)
   {
-    if(towns[i].id == observationId)
+    if(towns[i].id == observationId) //if exist
     {
        cout<<"|-------------------------------------------------|"<<endl;
        cout<<"             CURRENT Information:"<<endl;
@@ -276,34 +372,224 @@ void  editTownObservation()
        cout << "  LAST UPDATE  :    " << towns[i].lastUpdate  << endl;
        cout << "|-------------------------------------------------|"<<endl;
       incorrectId = 0;
-      townId =  i;
+      index =  i;
     }
   }
-  if(incorrectId)
+  if(incorrectId) //if not exist
     {
       cout << "|-------------------------------------------------|" << endl;
       cout << "    Did not find any observation with that id!" << endl;
       cout << "|-------------------------------------------------|" << endl;
     }
-  else
+  else //if exist
   {
     cout << endl << "|-------------------------------------------------|" << endl;
     cout << "| Please enter the new information for the town:  |" <<endl;
     cout << "|-------------------------------------------------|" << endl << endl;
     cout << " MOLECULAR    :  ";
-    cin>>towns[townId].molecular;
+    cin>>towns[index].molecular;
     cout << "---------------------------------------------------" << endl;
     cout << " SEROLOGIC    :  ";
-    cin>>towns[townId].serological;
+    cin>>towns[index].serological;
     cout << "---------------------------------------------------" << endl;
     cout << " POPULATION   :  ";
-    cin>>towns[townId].population;
+    cin>>towns[index].population;
     cout << "---------------------------------------------------" << endl;
     cout << " LAST UPDATE  :  ";
-    cin>>towns[townId].lastUpdate;
+    cin>>towns[index].lastUpdate;
     cout << "|-------------------------------------------------|" << endl;
-    cout << setw(18) << towns[townId].name << " was updated successfully!" << endl;
+    cout << setw(18) << towns[index].name << " was updated successfully!" << endl;
     cout << "|-------------------------------------------------|" << endl;
+  }
+}
+
+void deleteTown()
+{
+  string observationId; //User input
+  int pos; //array position
+  cout<<"   DELETING AN OBSERVATION"<<endl;
+  cout<<"|-----------------------------------|"<<endl;
+  cout<<"     Enter observation id: ";
+  cin >> observationId;
+  cout<<"|-----------------------------------|"<<endl;
+    
+  for(int i = 0; i < rowsCounter; i++)
+  {
+
+     if(observationId  == towns[i].id && towns[i].deleted == true) //if exist and is deleted 
+    {
+     cout << "Did not find town with that id!"<<endl;
+     cout<<"|-----------------------------------|"<<endl;
+     break;
+    }
+    if(observationId  == towns[i].id) //if exist and is not deleted
+    {
+      pos = i;
+      towns[i].deleted = true;
+      cout << towns[pos].name <<" was deleted successfull!"<<endl;
+      cout<<"|-----------------------------------|"<<endl;
+      maxTowns++; //increasing the space in the array by 1
+    }
+  }
+}
+
+void findTownByRegion()
+{
+  bool exist = false; 
+  string region; //user input
+
+  cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<"|"<<setw(65)<<"FINDING OBSERVATIONS BY REGION"<<setw(40)<<"|"<<endl;
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<setw(56)<<"Enter REGION name: ";
+   cin>>region;
+
+   for(int i = 0; i<rowsCounter; i++)
+   {
+     if(region == towns[i].region && !towns[i].deleted) //if exist and is not deleted
+     {
+          exist = true;
+     }
+   }
+  
+  if(exist) //if exist and is not deleted
+  {
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
+   cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
+   cout<<"|------------------------------------------------";
+   cout<<"--------------------------------------------------------|"<<endl;
+    
+    for(int i =0; i<rowsCounter; i++)
+    {
+      if(!towns[i].deleted && region == towns[i].region) //if exist and is not deleted
+     {
+         cout << "|" << setw(7)  << towns[i].id          <<  setw(8) << "|";
+         cout        << setw(11) << towns[i].name        <<  setw(4) << "|"; 
+         cout        << setw(11) << towns[i].region      <<  setw(4) << "|";
+         cout        << setw(8)  << towns[i].molecular   <<  setw(6) << "|";
+         cout        << setw(8)  << towns[i].serological <<  setw(8) << "|";
+         cout        << setw(10) << towns[i].population  <<  setw(5) << "|";
+         cout        << setw(12) << towns[i].lastUpdate  <<  setw(3) << "|" << endl;
+         cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+     }
+    }
+  }
+  else // if not exist or is deleted
+  {
+    cout << "|--------------------------------------------------------";
+    cout <<         "------------------------------------------------|"<<endl;
+    cout << "|" << setw(75) << "Did not find any Observation with that region!" << setw(30) << "|" << endl;
+    cout << "|--------------------------------------------------------";
+    cout <<         "------------------------------------------------|"<<endl;
+  }
+}
+
+void findObservationByTown()
+{
+   bool exist = false;  
+    string name; // User input
+
+  cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<"|"<<setw(65)<<"FINDING OBSERVATIONS BY TOWN NAME"<<setw(40)<<"|"<<endl;
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<<setw(56)<<"Enter REGION name: ";
+   cin.ignore(); //to ignore anything in the buffer
+   getline(cin, name);
+
+   for(int i = 0; i<rowsCounter; i++)
+   {
+     if(name == towns[i].name && !towns[i].deleted) //if exist and is not deleted
+     {
+          exist = true;
+     }
+   }
+  
+  if(exist) //if exist and is not deleted
+  {
+   cout<<"|--------------------------------------------------------";
+   cout<<"------------------------------------------------|"<<endl;
+   cout<< "|      ID      |     TOWN     |    REGION    |  MOLECULAR  |";
+   cout<< "   SEROLOGIC   |  POPULATION  |  LAST UPDATE |"<<endl;
+   cout<<"|------------------------------------------------";
+   cout<<"--------------------------------------------------------|"<<endl;
+    
+    for(int i =0; i<rowsCounter; i++)
+    {
+      if(!towns[i].deleted && name == towns[i].name) //if exist and is not deleted
+     {
+         cout << "|" << setw(7)  << towns[i].id          <<  setw(8) << "|";
+         cout        << setw(11) << towns[i].name        <<  setw(4) << "|"; 
+         cout        << setw(11) << towns[i].region      <<  setw(4) << "|";
+         cout        << setw(8)  << towns[i].molecular   <<  setw(6) << "|";
+         cout        << setw(8)  << towns[i].serological <<  setw(8) << "|";
+         cout        << setw(10) << towns[i].population  <<  setw(5) << "|";
+         cout        << setw(12) << towns[i].lastUpdate  <<  setw(3) << "|" << endl;
+         cout<<"|--------------------------------------------------------";
+         cout<<"------------------------------------------------|"<<endl;
+     }
+    }
+  }
+  else
+  {
+    cout << "|--------------------------------------------------------";
+    cout <<         "------------------------------------------------|"<<endl;
+    cout << "|" << setw(75) << "Did not find any Observation with that name!" << setw(30 ) << "|"<<endl;
+    cout << "|--------------------------------------------------------";
+    cout <<         "------------------------------------------------|"<<endl;
+  }
+}
+
+void saveObservation()
+{
+  
+  bool saved = false;
+  cout<<"|--------------------------------------------|"<<endl;
+  cout<<"|            SAVING TO FILE...               |"<<endl;
+  cout<<"|--------------------------------------------|"<<endl;
+  if(rowsCounter>0) //if exist data 
+  {
+      ofstream covidData;
+      covidData.open("PuertoRicoCovid19DF.csv");
+      covidData<<var<<endl;
+
+      for(int i=0; i<rowsCounter; i++)
+      {
+        if(towns[i].deleted) //to remove the data from the deleted towns
+        {
+          towns[i].id = "";
+          towns[i].name = "";
+          towns[i].region = "";
+          towns[i].molecular = "";
+          towns[i].serological = "";
+          towns[i].population = "";
+          towns[i].lastUpdate = "";
+        }
+        else //to write all the data in the file
+        {
+          covidData<<towns[i].id<<",";
+          covidData<<towns[i].name<<",";
+          covidData<<towns[i].region<<",";
+          covidData<<towns[i].molecular<<",";
+          covidData<<towns[i].serological<<",";
+          covidData<<towns[i].population<<",";
+          covidData<<towns[i].lastUpdate<<endl;
+        }
+      }
+  cout<<"| Your observations were successfully saved! |"<<endl;
+  cout<<"|--------------------------------------------|"<<endl;
+  covidData.close();
+  }
+  else //if not exist data
+  {
+    cout<< "|         Could not save to file!            |"<<endl;
+    cout<<"|--------------------------------------------|"<<endl;
   }
 }
 
@@ -311,25 +597,139 @@ void getData()
 {
     ifstream covidData;
     covidData.open("PuertoRicoCovid19DF.csv");
-    string var;
     bool finish = 0;
     covidData>>var; //Discarding the table header
-      
-     while(covidData)
-        {
-         getline(covidData ,  towns[rowsCounter].id          , ',');
-         getline(covidData ,  towns[rowsCounter].name        , ',');
-         getline(covidData ,  towns[rowsCounter].region      , ',');
-         getline(covidData ,  towns[rowsCounter].molecular   , ',');
-         getline(covidData ,  towns[rowsCounter].serological , ',');
-         getline(covidData ,  towns[rowsCounter].population  , ',');
-         getline(covidData ,  towns[rowsCounter].lastUpdate       ); 
-         rowsCounter++;
-        }
-      
-      if(!covidData)
+
+      if(covidData) //if there's unread information 
       {
-        covidData.close();
+        cout<<"|---------------------------------------------|"<<endl;
+        cout<<"|             LOADING FROM FILE...            |"<<endl;
+        cout<<"|---------------------------------------------|"<<endl;
+        cout<<"| Your observations were successfully loaded! |"<<endl;
+        cout<<"|---------------------------------------------|"<<endl;
+         
+         while(covidData) //while exiting unread information, save the data on the struct.
+          {
+             getline(covidData ,  towns[rowsCounter].id          , ',');
+             getline(covidData ,  towns[rowsCounter].name        , ',');
+             getline(covidData ,  towns[rowsCounter].region      , ',');
+             getline(covidData ,  towns[rowsCounter].molecular   , ',');
+             getline(covidData ,  towns[rowsCounter].serological , ',');
+             getline(covidData ,  towns[rowsCounter].population  , ',');
+             getline(covidData ,  towns[rowsCounter].lastUpdate       );
+
+             if(!covidData) //if there's no more to read
+               {
+                  covidData.close();
+               }
+             else
+               {
+                rowsCounter++; // to count the towns
+               }
+          }
+        towns[0].id.replace(0, 2, "");//to delete  \n, please ignore.
+        towns[5].name.replace(0, 1, "");//to delete a space, please ignore.
+        for(int x=0 ; x<=5; x++)//deliting spaces errors, please ignore.
+          {
+              towns[x].lastUpdate.erase(10, 18); 
+          }
       }
-    rowsCounter--;
+      else  //if there's nothing left to read
+      {
+        cout<<"|---------------------------------------------|"<<endl;
+        cout<<"|             LOADING FROM FILE...            |"<<endl;
+        cout<<"|---------------------------------------------|"<<endl;
+        cout<<"|             Could not load file!            |"<<endl;
+        cout<<"|---------------------------------------------|"<<endl;
+      }
+}
+
+void createBarChart()
+{
+  int total[78]; // to save the total casesfor each town
+  int longBar;   // to stipulate the length of the bar
+  char bar = '*';// bar simbol
+
+  cout<<"|-------------------------------------------------------------------------------|"<<endl;
+  cout<<"|                              BAR CHART OPTION                                 |"<<endl;
+  cout<<"|-------------------------------------------------------------------------------|"<<endl;
+
+  if(rowsCounter>0) //if exist data
+  {
+    cout<<"|                            TOTAL CASES FOR TOWN                               |"<<endl;
+    cout<<"|-------------------------------------------------------------------------------|"<<endl;
+    cout<<"|                                                                               |"<<endl;
+    cout<<"|   Town   |                                                           |Total   |"<<endl;
+    for(int i =0; i<rowsCounter; i++)
+    {
+      Converse(); // to convert the string to integers
+      
+      total[i]= towns[i].Molecular + towns[i].Serological;
+      
+      longBar = total[i]/10;
+      
+      cout<<"|"<<"  "<<towns[i].name<<"|   ";
+      for(int x =0; x<=longBar; x++)
+      {
+        cout<<bar;
+      }
+      cout<<"    |"<<total[i]<<endl;
+    }
+     cout<<"|                                                                               |"<<endl;
+     cout<<"|-------------------------------------------------------------------------------|"<<endl;
+  }
+  else //if not exist data
+  {
+     cout<<"|                                                                               |"<<endl;
+     cout<<"|                           The data frame is empty!                            |"<<endl;
+     cout<<"|                                                                               |"<<endl;
+     cout<<"|-------------------------------------------------------------------------------|"<<endl;
+  }
+}
+
+void showDashboard()
+{
+  int totalCases =0;
+  int totalMolecular =0;
+  int totalSerological =0;
+  int mean;
+  int mode;
+  int median;
+  
+  Converse(); // to convert the string to integers
+  for(int i =0; i<rowsCounter; i++)
+  {
+    totalCases = totalCases + towns[i].Molecular;
+    totalCases = totalCases + towns[i].Serological;
+
+    totalMolecular = totalMolecular + towns[i].Molecular;
+
+    totalSerological = totalSerological + towns[i].Serological;
+  }
+
+  cout<<"|-------------------------------------------------------|"<<endl;
+  cout<<"|          PUERTO RICO COVID DASHBOARD                  |"<<endl;
+  cout<<"|-------------------------------------------------------|"<<endl;
+  cout<<"|                                                       |"<<endl;
+  cout<<"| Date        : "<<towns[0].lastUpdate << setw(31)  << "|"<<endl;
+  cout<<"| Total Cases : "<<totalCases          << setw(38)  << "|"<<endl;
+  cout<<"| Molecular   : "<<totalMolecular      << setw(38)  << "|"<<endl;
+  cout<<"| Serological : "<<totalSerological    << setw(38)  << "|"<<endl;
+  cout<<"|-------------------------------------------------------|"<<endl;
+
+}
+
+void Converse() // to convert the string to integers
+{
+  for(int i =0; i<rowsCounter; i++)
+  {
+    towns[i].Molecular = stoi(towns[i].molecular);
+    towns[i].Serological = stoi(towns[i].serological);
+  }
+}
+
+void exit()
+{
+  done = 1;
+
 }
